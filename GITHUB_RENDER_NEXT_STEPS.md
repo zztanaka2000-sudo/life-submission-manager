@@ -16,6 +16,12 @@ GitHubで新しいリポジトリを作成します。
 life-submission-manager
 ```
 
+作成済みリポジトリ:
+
+```text
+https://github.com/zztanaka2000-sudo/life-submission-manager
+```
+
 作成時は、README、.gitignore、ライセンスを追加しないでください。
 このフォルダにはすでに必要なファイルがあります。
 
@@ -26,6 +32,12 @@ GitHubで表示されるリポジトリURLを使って、PowerShellで次を実�
 ```powershell
 cd C:\Users\tanaka\Documents\Codex\2026-07-22\life-web-life-zip-sandbox-mnt\work\zip_extract_2\life_submission_manager
 .\push_to_github.ps1 -RepositoryUrl https://github.com/<GitHubユーザー名>/life-submission-manager.git
+```
+
+この環境では、次のURLでpush済みです。
+
+```powershell
+.\push_to_github.ps1 -RepositoryUrl https://github.com/zztanaka2000-sudo/life-submission-manager.git
 ```
 
 手動で実行する場合は次の通りです。
