@@ -23,6 +23,8 @@ services:
         value: "true"
       - key: CSRF_COOKIE_SECURE
         value: "true"
+      - key: AUTO_SEED_DEMO
+        value: "true"
 
 databases:
   - name: life-manager-db
