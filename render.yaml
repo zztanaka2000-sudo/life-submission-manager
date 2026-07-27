@@ -2,7 +2,7 @@ services:
   - type: web
     name: life-submission-manager
     runtime: docker
-    plan: starter
+    plan: free
     healthCheckPath: /health/
     envVars:
       - key: DJANGO_DEBUG
@@ -26,4 +26,4 @@ services:
 
 databases:
   - name: life-manager-db
-    plan: basic-256mb
+    plan: free

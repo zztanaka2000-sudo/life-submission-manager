@@ -23,6 +23,8 @@ Renderは `render.yaml` を読み、次を作成します。
 - Web Service: `life-submission-manager`
 - PostgreSQL: `life-manager-db`
 
+MVP検証用として無料プランを指定しています。無料PostgreSQLは30日で期限切れになるため、継続運用する場合は有料プランへ変更してください。
+
 ## 3. 環境変数を設定
 
 初回デプロイ後、RenderのWeb Serviceで以下を設定します。
@@ -72,4 +74,3 @@ https://<Renderのホスト名>/
 ```
 
 `localhost` や `127.0.0.1` はローカルPC専用です。外部PCには共有しません。
-
