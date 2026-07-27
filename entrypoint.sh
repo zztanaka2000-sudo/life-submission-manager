@@ -4,7 +4,7 @@ set -e
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 
-if [ "${AUTO_SEED_DEMO:-false}" = "true" ]; then
+if [ "${AUTO_SEED_DEMO:-true}" = "true" ]; then
     python manage.py seed_demo_data
 fi
 
