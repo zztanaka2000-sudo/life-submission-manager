@@ -25,6 +25,13 @@ GitHubで表示されるリポジトリURLを使って、PowerShellで次を実�
 
 ```powershell
 cd C:\Users\tanaka\Documents\Codex\2026-07-22\life-web-life-zip-sandbox-mnt\work\zip_extract_2\life_submission_manager
+.\push_to_github.ps1 -RepositoryUrl https://github.com/<GitHubユーザー名>/life-submission-manager.git
+```
+
+手動で実行する場合は次の通りです。
+
+```powershell
+cd C:\Users\tanaka\Documents\Codex\2026-07-22\life-web-life-zip-sandbox-mnt\work\zip_extract_2\life_submission_manager
 git branch -M main
 git remote add origin https://github.com/<GitHubユーザー名>/life-submission-manager.git
 git push -u origin main
@@ -103,4 +110,3 @@ python manage.py check_deployment_readiness
 - Docker
 
 ただし、RenderはGitHubリポジトリからDockerビルドするため、このPCにDockerが無くても公開作業は進められます。
-
