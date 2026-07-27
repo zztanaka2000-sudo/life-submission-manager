@@ -1,0 +1,78 @@
+{% extends "core/base.html" %}
+{% block title %}使い方 | LIFE提出管理{% endblock %}
+{% block content %}
+<h1 class="h3">使い方</h1>
+
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="card mb-3">
+      <div class="card-header fw-bold">毎月の確認手順</div>
+      <div class="card-body">
+        <ol class="mb-0">
+          <li>ダッシュボードで未提出、期限接近、期限超過、入力・設定チェックを確認します。</li>
+          <li>利用者や加算、LIFE登録人数を更新した後は「提出予定を再計算」を押します。</li>
+          <li>提出予定一覧で、対象月、加算、提出区分、期限、判定理由を確認します。</li>
+          <li>提出が終わった予定は、行ごとの「提出済み」または「選択を提出済み」で反映します。</li>
+          <li>月末や翌月初に、LIFE登録人数とアプリ登録人数の差がないか確認します。</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header fw-bold">CSVの使い方</div>
+      <div class="card-body">
+        <p>提出予定は「CSV出力」から出力できます。提出実績をまとめて反映する場合は、提出予定一覧の「提出実績CSV取込」を使います。</p>
+        <p class="mb-2">取込CSVの必要列は次のとおりです。</p>
+        <div class="table-responsive">
+          <table class="table table-sm">
+            <thead><tr><th>列名</th><th>入力例</th></tr></thead>
+            <tbody>
+              <tr><td>利用者管理ID</td><td>A-001</td></tr>
+              <tr><td>加算</td><td>科学的介護推進体制加算</td></tr>
+              <tr><td>対象月</td><td>2026-07</td></tr>
+              <tr><td>提出区分</td><td>periodic</td></tr>
+              <tr><td>提出日</td><td>2026-07-22</td></tr>
+              <tr><td>外部参照</td><td>任意</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <a class="btn btn-outline-secondary" href="{% url 'submission_import_template_csv' %}?facility={{ facility.pk }}">提出実績CSVひな形をダウンロード</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card mb-3">
+      <div class="card-header fw-bold">最初に登録するもの</div>
+      <div class="card-body">
+        <ol class="mb-0">
+          <li>法人、施設</li>
+          <li>ユーザーと施設権限</li>
+          <li>利用者</li>
+          <li>施設で算定する加算</li>
+          <li>利用者ごとの加算対象設定</li>
+          <li>計画作成・変更、入退院、利用再開などのイベント</li>
+          <li>LIFE登録人数スナップショット</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header fw-bold">状態の見方</div>
+      <div class="card-body">
+        <ul class="mb-0">
+          <li>未提出: 期限まで余裕がある提出予定です。</li>
+          <li>期限接近: 期限が近い提出予定です。</li>
+          <li>期限超過: 期限を過ぎています。</li>
+          <li>提出済み: 提出実績が反映されています。</li>
+          <li>要確認: 制度上の扱いを職員が確認する必要があります。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alert alert-warning">
+      LIFEへ直接自動送信するアプリではありません。提出管理、照合、CSV出力、提出済み反映を行うための管理アプリです。
+    </div>
+  </div>
+</div>
+{% endblock %}

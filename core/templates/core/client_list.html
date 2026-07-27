@@ -1,0 +1,25 @@
+{% extends "core/base.html" %}
+{% block title %}利用者一覧 | LIFE提出管理{% endblock %}
+{% block content %}
+<h1 class="h3">利用者一覧</h1>
+<div class="alert alert-info">実名を保存せず、施設内管理IDと仮名で運用することを推奨します。</div>
+<div class="table-responsive">
+<table class="table table-striped align-middle">
+  <thead><tr><th>管理ID</th><th>表示名</th><th>利用開始</th><th>利用終了</th><th>LIFE登録確認</th><th>有効</th></tr></thead>
+  <tbody>
+  {% for client in clients %}
+    <tr>
+      <td>{{ client.external_id }}</td>
+      <td>{{ client.display_name }}</td>
+      <td>{{ client.service_start_date }}</td>
+      <td>{{ client.service_end_date|default:"-" }}</td>
+      <td>{% if client.life_registered %}<span class="badge bg-success">登録済み</span>{% else %}<span class="badge bg-warning text-dark">未確認</span>{% endif %}</td>
+      <td>{{ client.active|yesno:"有効,無効" }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="6" class="text-center text-muted py-4">利用者が登録されていません。</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

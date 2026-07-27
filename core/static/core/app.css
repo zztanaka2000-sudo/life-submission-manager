@@ -1,0 +1,8 @@
+body { background: #f7f8fa; }
+.metric { min-height: 130px; }
+.status-pending { background: #6c757d; }
+.status-due_soon { background: #ffc107; color: #212529; }
+.status-overdue { background: #dc3545; }
+.status-submitted { background: #198754; }
+.status-review { background: #0dcaf0; color: #212529; }
+.table td, .table th { vertical-align: middle; }

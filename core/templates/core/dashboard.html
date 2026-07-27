@@ -1,0 +1,92 @@
+{% extends "core/base.html" %}
+{% block title %}ダッシュボード | LIFE提出管理{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h1 class="h3 mb-1">{{ facility.name }}</h1>
+    <div class="text-muted">基準日 {{ today }}</div>
+  </div>
+  {% if can_edit %}
+  <form method="post" action="{% url 'recalculate' %}">
+    {% csrf_token %}
+    <input type="hidden" name="facility" value="{{ facility.pk }}">
+    <button class="btn btn-primary">提出予定を再計算</button>
+  </form>
+  {% endif %}
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-2"><div class="card metric"><div class="card-body"><div class="text-muted">未提出</div><div class="display-6">{{ status_counts.pending|default:0 }}</div></div></div></div>
+  <div class="col-md-2"><div class="card metric border-warning"><div class="card-body"><div class="text-muted">期限接近</div><div class="display-6">{{ status_counts.due_soon|default:0 }}</div></div></div></div>
+  <div class="col-md-2"><div class="card metric border-danger"><div class="card-body"><div class="text-muted">期限超過</div><div class="display-6">{{ status_counts.overdue|default:0 }}</div></div></div></div>
+  <div class="col-md-2"><div class="card metric border-success"><div class="card-body"><div class="text-muted">提出済み</div><div class="display-6">{{ status_counts.submitted|default:0 }}</div></div></div></div>
+  <div class="col-md-2"><div class="card metric"><div class="card-body"><div class="text-muted">有効利用者</div><div class="display-6">{{ active_client_count }}</div></div></div></div>
+  <div class="col-md-2"><div class="card metric"><div class="card-body"><div class="text-muted">アプリ上LIFE登録</div><div class="display-6">{{ app_registered_count }}</div></div></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-xl-8">
+    <div class="card">
+      <div class="card-header fw-bold">今月が期限の提出予定</div>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0">
+          <thead><tr><th>利用者</th><th>加算</th><th>区分</th><th>期限</th><th>状態</th><th></th></tr></thead>
+          <tbody>
+          {% for row in schedules %}
+            <tr>
+              <td>{{ row.client.display_name }}</td>
+              <td>{{ row.addition.name }}</td>
+              <td>{{ row.get_submission_kind_display }}</td>
+              <td>{{ row.due_date }}</td>
+              <td><span class="badge status-{{ row.status }}">{{ row.get_status_display }}</span></td>
+              <td>
+                {% if can_edit and row.status != "submitted" %}
+                <form method="post" action="{% url 'mark_submitted' row.pk %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                  <button class="btn btn-sm btn-success">提出済みにする</button>
+                </form>
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="6" class="text-center text-muted py-4">対象データがありません。</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4">
+    <div class="card mb-3">
+      <div class="card-header fw-bold">LIFE登録人数照合</div>
+      <div class="card-body">
+        {% if latest_snapshot %}
+          <div>LIFE側スナップショット: <strong>{{ latest_snapshot.registered_count }}名</strong></div>
+          <div class="text-muted small">{{ latest_snapshot.snapshot_date }} 時点</div>
+          <div class="mt-2">アプリ上登録済み: <strong>{{ app_registered_count }}名</strong></div>
+        {% else %}
+          <div class="text-muted">LIFE側登録人数のスナップショットが未登録です。</div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header fw-bold">入力・設定チェック</div>
+      <div class="list-group list-group-flush">
+        {% for issue in issues %}
+          <div class="list-group-item">
+            <div class="d-flex justify-content-between">
+              <strong>{{ issue.get_severity_display }}</strong>
+              <span class="text-muted small">{{ issue.code }}</span>
+            </div>
+            <div>{{ issue.message }}</div>
+            {% if issue.client %}<div class="small text-muted">{{ issue.client.display_name }}</div>{% endif %}
+          </div>
+        {% empty %}
+          <div class="list-group-item text-success">未解決の指摘はありません。</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

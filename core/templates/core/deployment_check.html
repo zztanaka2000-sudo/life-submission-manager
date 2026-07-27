@@ -1,0 +1,62 @@
+{% extends "core/base.html" %}
+{% block title %}公開前チェック | LIFE提出管理{% endblock %}
+{% block content %}
+<h1 class="h3">公開前チェック</h1>
+<p class="text-muted">外部公開前に必要な設定を機械的に確認します。制度判断、契約、バックアップ復元テストなど、人の確認が必要な項目は別途チェックしてください。</p>
+
+<div class="row g-3 mb-3">
+  <div class="col-md-4">
+    <div class="card border-success">
+      <div class="card-body">
+        <div class="text-muted">OK</div>
+        <div class="display-6">{{ summary.ok }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-warning">
+      <div class="card-body">
+        <div class="text-muted">要確認</div>
+        <div class="display-6">{{ summary.warning }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-danger">
+      <div class="card-body">
+        <div class="text-muted">要修正</div>
+        <div class="display-6">{{ summary.error }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped align-middle">
+    <thead>
+      <tr><th>状態</th><th>項目</th><th>内容</th></tr>
+    </thead>
+    <tbody>
+      {% for check in checks %}
+      <tr>
+        <td>
+          {% if check.status == "ok" %}
+            <span class="badge bg-success">OK</span>
+          {% elif check.status == "warning" %}
+            <span class="badge bg-warning text-dark">要確認</span>
+          {% else %}
+            <span class="badge bg-danger">要修正</span>
+          {% endif %}
+        </td>
+        <td>{{ check.label }}</td>
+        <td>{{ check.message }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="alert alert-info">
+  Render公開時は、環境変数に <code>DJANGO_DEBUG=false</code>、<code>DJANGO_SECRET_KEY</code>、<code>DJANGO_ALLOWED_HOSTS</code>、<code>DJANGO_CSRF_TRUSTED_ORIGINS</code>、<code>DATABASE_URL</code> を設定してください。
+</div>
+{% endblock %}
